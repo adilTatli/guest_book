@@ -43,7 +43,6 @@ class ReviewController extends Controller
 
         $user->save();
 
-
         return redirect()->route('index')->with('success', 'Ваш отзыв принят!');
     }
 }

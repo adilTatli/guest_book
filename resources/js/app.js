@@ -53,12 +53,9 @@ function initRatings() {
             ratingItem.addEventListener("click", function (e) {
                 initRatingVars(rating);
 
-                if (rating.dataset.ajax) {
-                    setRatingValue(ratingItem.value, rating);
-                } else {
-                    ratingValue.innerHTML = index + 1;
-                    setRatingActiveWidth();
-                }
+                ratingValue.innerHTML = index + 1;
+                setRatingActiveWidth();
+
             });
         }
     }
