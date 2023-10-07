@@ -9,21 +9,40 @@ class ReviewController extends Controller
 {
     public function index(Request $request)
     {
-        $filter = $request->input('filter', 'date_added_desc');
+        $search = $request->input('search', '');
+        $sort = $request->input('sort', '');
 
-        if ($filter === 'name_and_email_asc') {
-            $users = User::orderBy('name')
-                ->orderBy('email')
-                ->paginate(25);
-        } elseif ($filter === 'date_added_asc') {
-            $users = User::orderBy('created_at', 'asc')
-                ->paginate(25);
-        } elseif ($filter === 'date_added_desc') {
-            $users = User::orderBy('created_at', 'desc')
-                ->paginate(25);
+        $users = $this->search($search);
+
+        if (!empty($search)) {
+            if ($sort === 'date_added_asc') {
+                $users->orderBy('created_at', 'asc');
+            } elseif ($sort === 'date_added_desc') {
+                $users->orderBy('created_at', 'desc');
+            } else {
+                $users->orderByDesc('rating');
+            }
+        } else {
+            $users->orderBy('created_at', 'desc');
         }
 
-        return view('index', compact('users'));
+        $users = $users->paginate(25);
+
+        return view('index', compact('users', 'search', 'sort'));
+    }
+
+    protected function search($search)
+    {
+        $query = User::query();
+
+        if (!empty($search)) {
+            $query->where(function ($query) use ($search) {
+                $query->where('name', 'like', "%$search%")
+                    ->orWhere('email', 'like', "%$search%");
+            });
+        }
+
+        return $query;
     }
 
     public function store(Request $request)

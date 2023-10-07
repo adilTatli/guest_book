@@ -6,19 +6,31 @@
         <h1>Гостевая книга</h1>
 
         <form method="GET" action="{{ route('index') }}">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="mb-2" for="search">Поиск</label>
+                    <input type="text" name="search" class="form-control" id="search" value="{{ request('search') }}">
+                </div>
+            </div>
+        </form>
+
+        <form method="GET" action="{{ route('index') }}">
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
-                            <label class="mb-2">Фильтр</label>
+                            <label class="mb-2">Отсортировать</label>
                             <select name="filter" class="form-control select2" style="width: 100%;">
-                                <option value="" @if(empty(request('filter'))) selected @endif>Выберите фильтр</option>
-                                <option value="name_and_email_asc" @if(request('filter') === 'name_and_email_asc') selected @endif>По именам и email (А-Я)</option>
-                                <option value="date_added_asc" @if(request('filter') === 'date_added_asc') selected @endif>По возрастанию даты</option>
-                                <option value="date_added_desc" @if(request('filter') === 'date_added_desc') selected @endif>По убыванию даты</option>
+                                <option value="" @if(empty(request('sort'))) selected @endif>Выберите фильтр</option>
+                                <option value="date_added_asc" @if(request('sort') === 'date_added_asc') selected @endif>По возрастанию даты</option>
+                                <option value="date_added_desc" @if(request('sort') === 'date_added_desc') selected @endif>По убыванию даты</option>
                             </select>
                         </div>
-                        <div class="col mt-2 mb-2">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="text-right mt-2">
                             <button type="submit" class="btn btn-primary">Применить</button>
                         </div>
                     </div>
