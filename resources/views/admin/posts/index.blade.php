@@ -3,7 +3,7 @@
 @section('content')
 
     <div class="container mt-5">
-        <h1>Гостевая книга</h1>
+        <h1>Личный кабинет</h1>
 
         <form method="GET" action="{{ route('search') }}">
             <div class="col-md-3">
@@ -16,10 +16,6 @@
 
         <h2 class="mt-5">Отзывы</h2>
 
-        @if(!auth()->user())
-            <h4>Войдите чтобы оставить отзыв</h4>
-        @endif
-
         @if($posts->count())
             <table class="table">
                 <thead>
@@ -29,6 +25,7 @@
                     <th>Отзыв</th>
                     <th>Оценка</th>
                     <th>Дата добавления</th>
+                    <th>Actions</th>
                 </tr>
                 </thead>
                 <tbody id="review-table">
@@ -47,6 +44,21 @@
                             </div>
                         </td>
                         <td>{{ $post->created_at->diffForHumans() }}</td>
+                        <td>
+                            <a href="{{ route('admin.posts.edit', ['post' => $post->id]) }}" class="btn btn-info mb-3 mt-2">
+                                <i class="fas fa-pencil-alt">Изменить</i>
+                            </a>
+
+                            <form action="{{ route('admin.posts.destroy', ['post' => $post->id]) }}" method="post" class="float-left">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit"
+                                        class="btn btn-danger mb-2"
+                                        onclick="return confirm('Подтвердите удаление')">
+                                    <i class="fas fa-trash-alt">Удалить</i>
+                                </button>
+                            </form>
+                        </td>
                     </tr>
                 @endforeach
 
